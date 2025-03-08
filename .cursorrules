@@ -1,0 +1,112 @@
+# OLS Gauss-Markov Assumptions Checker - Cursor Rules
+
+## Project Context
+This project is a Python-based tool for econometricians and PhD economics students that tests whether a given OLS (Ordinary Least Squares) regression model satisfies the Gauss-Markov assumptions necessary for the estimator to be BLUE (Best Linear Unbiased Estimator). The tool combines formal hypothesis tests with visual diagnostics to provide both statistical rigor and intuitive understanding.
+
+## Technical Framework
+- **Primary language**: Python 3.8+
+- **Core libraries**: statsmodels, pandas, numpy, matplotlib, seaborn, streamlit, patsy, scipy
+- **Development approach**: Modular design with separation of concerns
+- **Testing**: Pytest for unit tests, with particular attention to statistical accuracy
+- **Documentation**: Numpy-style docstrings, markdown for guides
+
+## Project Structure and Implementation Status
+```
+gauss_markov_checker/
+├── __init__.py
+├── assumptions/
+│   ├── __init__.py
+│   ├── linearity.py             [COMPLETED] - RESET test implementation
+│   ├── multicollinearity.py     [COMPLETED] - VIF, condition number, correlations
+│   ├── interpretation_rules.json [CONTINUOUSLY UPDATED] - Test interpretations knowledge base
+│   ├── exogeneity.py           [COMPLETED]
+│   ├── homoscedasticity.py     [COMPLETED]
+│   ├── autocorrelation.py      [COMPLETED]
+│   └── normality.py            [PENDING]
+├── visualization/
+│   ├── __init__.py
+│   ├── diagnostic_plots.py      [PENDING] - Separated from assumption tests
+│   └── report_generator.py      [PENDING]
+├── utils/
+│   ├── __init__.py
+│   ├── model_wrappers.py       [PENDING]
+│   └── statistics.py           [PENDING]
+├── app/
+│   ├── __init__.py
+│   └── streamlit_app.py        [PENDING]
+├── tests/
+│   ├── __init__.py
+│   ├── test_linearity.py       [PENDING]
+│   ├── test_multicollinearity.py [PENDING]
+│   └── test_app.py             [PENDING]
+└── examples/
+    ├── __init__.py
+    ├── example_datasets.py      [PENDING]
+    └── notebooks/              [PENDING]
+```
+
+## Implementation Progress
+
+### Completed Features
+1. **Core Statistical Tests**:
+   - Linearity (RESET test)
+   - Multicollinearity (VIF, condition numbers, correlations)
+   - Clean separation of statistical tests from visualization code
+
+2. **Documentation**:
+   - Comprehensive interpretation rules in JSON format
+   - Numpy-style docstrings for all functions
+   - Clear mathematical and statistical explanations
+
+### Current Status
+- Successfully implemented core statistical tests for linearity and multicollinearity
+- Established clean separation between test logic and visualization
+- Created knowledge base for test interpretation (interpretation_rules.json)
+- Improved code organization and documentation
+
+### Next Steps
+1. **Statistical Implementation**:
+   - Complete remaining assumption tests (homoscedasticity, autocorrelation, normality)
+   - Implement exogeneity tests
+   - Add robust alternatives for each test
+
+2. **Visualization**:
+   - Implement diagnostic plots module
+   - Create comprehensive visualization suite for each assumption
+   - Add interactive plot capabilities
+
+3. **Testing**:
+   - Develop comprehensive test suite
+   - Add edge case handling
+   - Include numerical accuracy tests
+
+4. **Documentation**:
+   - Create user guide
+   - Add example notebooks
+   - Include theoretical background documentation
+
+5. **App Development**:
+   - Build Streamlit interface
+   - Add report generation functionality
+   - Implement interactive diagnostics
+
+## Code Style Guidelines
+- Follow PEP 8 guidelines
+- Use numpy-style docstrings
+- Maximum line length: 88 characters (Black formatter default)
+- Use type hints where appropriate
+- Variable names should be descriptive and follow econometric conventions
+- Use modular and dRY coding styles
+
+## Implementation Notes
+- All statistical tests include p-values and critical values
+- Visualization functions have consistent parameters and return types
+- Error messages are informative for econometricians
+- References to econometric literature included for all tests
+
+## Documentation Requirements
+Each function includes:
+- Null and alternative hypotheses
+- Interpretation guidelines
+- Example usage
+
