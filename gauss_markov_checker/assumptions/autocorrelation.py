@@ -94,8 +94,8 @@ def breusch_godfrey_test(
     -------
     Dict[str, Union[float, str]]
         Dictionary containing:
-        - 'lm_statistic': Lagrange Multiplier test statistic
-        - 'lm_p_value': p-value for the LM test
+        - 'statistic': Lagrange Multiplier test statistic
+        - 'p_value': p-value for the LM test
         - 'f_statistic': F-statistic version of the test
         - 'f_p_value': p-value for the F-statistic
         - 'conclusion': String interpretation of the test result
@@ -124,10 +124,10 @@ def breusch_godfrey_test(
         conclusion = "Fail to reject null hypothesis: No significant evidence of autocorrelation"
     
     return {
-        'lm_statistic': lm_stat,
-        'lm_p_value': lm_pvalue,
-        'f_statistic': fvalue,
-        'f_p_value': fpvalue,
+        'statistic': float(lm_stat),
+        'p_value': float(lm_pvalue),
+        'f_statistic': float(fvalue),
+        'f_p_value': float(fpvalue),
         'conclusion': conclusion
     }
 
@@ -136,7 +136,7 @@ def ljung_box_test(
     model_results, 
     lags: Optional[Union[int, List[int]]] = None,
     model_df: int = 0
-) -> Dict[str, Union[pd.DataFrame, str]]:
+) -> Dict[str, Union[float, str]]:
     """
     Perform the Ljung-Box test for autocorrelation at multiple lags.
     
@@ -156,10 +156,12 @@ def ljung_box_test(
         
     Returns
     -------
-    Dict[str, Union[pd.DataFrame, str]]
+    Dict[str, Union[float, str]]
         Dictionary containing:
-        - 'results': DataFrame with test statistics and p-values for each lag
+        - 'statistic': Test statistic for the first lag
+        - 'p_value': p-value for the test
         - 'conclusion': String interpretation of the test result
+        - 'full_results': DataFrame with test statistics and p-values for each lag
         
     Notes
     -----
@@ -177,15 +179,22 @@ def ljung_box_test(
     # Perform the Ljung-Box test
     results_df = acorr_ljungbox(resid, lags=lags, model_df=model_df, return_df=True)
     
+    # Get the results for the first lag (or specified lag)
+    first_lag = results_df.index[0]
+    lb_stat = float(results_df.loc[first_lag, 'lb_stat'])
+    lb_pvalue = float(results_df.loc[first_lag, 'lb_pvalue'])
+    
     # Determine conclusion based on p-values (using 0.05 significance level)
-    if (results_df['lb_pvalue'] < 0.05).any():
-        conclusion = "Reject null hypothesis: Autocorrelation is present at some lags"
+    if lb_pvalue < 0.05:
+        conclusion = "Reject null hypothesis: Autocorrelation is present"
     else:
         conclusion = "Fail to reject null hypothesis: No significant evidence of autocorrelation"
     
     return {
-        'results': results_df,
-        'conclusion': conclusion
+        'statistic': lb_stat,
+        'p_value': lb_pvalue,
+        'conclusion': conclusion,
+        'full_results': results_df
     }
 
 
@@ -251,8 +260,8 @@ if __name__ == "__main__":
     
     print("Breusch-Godfrey Test:")
     bg_results = breusch_godfrey_test(results, nlags=2)
-    print(f"LM Statistic: {bg_results['lm_statistic']}")
-    print(f"LM p-value: {bg_results['lm_p_value']}")
+    print(f"Statistic: {bg_results['statistic']}")
+    print(f"p-value: {bg_results['p_value']}")
     print(f"F Statistic: {bg_results['f_statistic']}")
     print(f"F p-value: {bg_results['f_p_value']}")
     print(f"Conclusion: {bg_results['conclusion']}")
@@ -261,7 +270,7 @@ if __name__ == "__main__":
     print("Ljung-Box Test:")
     lb_results = ljung_box_test(results, lags=[1, 2, 4, 8])
     print("Results by lag:")
-    print(lb_results['results'])
+    print(lb_results['full_results'])
     print(f"Conclusion: {lb_results['conclusion']}")
     print("\n" + "-"*80 + "\n")
     

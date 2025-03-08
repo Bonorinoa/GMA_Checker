@@ -1,24 +1,17 @@
 """
-Gauss-Markov Assumptions Testing Modules
-
-This package contains modules for testing each of the Gauss-Markov assumptions
-required for OLS estimators to be BLUE (Best Linear Unbiased Estimators).
+Gauss-Markov assumptions testing module.
 """
 
-from gauss_markov_checker.assumptions import (
-    linearity,
-    multicollinearity,
-    exogeneity,
-    homoscedasticity,
-    autocorrelation,
-    normality
-)
+from .linearity import reset_test as run_RESET_test
+from .autocorrelation import run_all_autocorrelation_tests
+from .exogeneity import run_all_exogeneity_tests
+from .homoscedasticity import run_all_homoscedasticity_tests
+from .normality import run_all_normality_tests
 
 __all__ = [
-    'linearity',
-    'multicollinearity',
-    'exogeneity',
-    'homoscedasticity',
-    'autocorrelation',
-    'normality'
+    'run_RESET_test',
+    'run_all_autocorrelation_tests',
+    'run_all_exogeneity_tests',
+    'run_all_homoscedasticity_tests',
+    'run_all_normality_tests'
 ]
